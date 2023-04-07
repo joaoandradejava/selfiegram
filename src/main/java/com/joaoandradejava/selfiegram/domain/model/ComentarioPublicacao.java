@@ -2,6 +2,8 @@ package com.joaoandradejava.selfiegram.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 
 @Entity
@@ -53,6 +56,9 @@ public class ComentarioPublicacao implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_resposta"))
 	private ComentarioPublicacao resposta;
+
+	@OneToMany(mappedBy = "comentario", orphanRemoval = true)
+	private List<CurtidaComentario> curtidas = new ArrayList<>();
 
 	public ComentarioPublicacao() {
 	}
@@ -119,6 +125,14 @@ public class ComentarioPublicacao implements Serializable {
 
 	public void setResposta(ComentarioPublicacao resposta) {
 		this.resposta = resposta;
+	}
+
+	public List<CurtidaComentario> getCurtidas() {
+		return curtidas;
+	}
+
+	public void setCurtidas(List<CurtidaComentario> curtidas) {
+		this.curtidas = curtidas;
 	}
 
 	@Override
