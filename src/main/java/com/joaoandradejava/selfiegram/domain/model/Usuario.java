@@ -2,7 +2,9 @@ package com.joaoandradejava.selfiegram.domain.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -53,8 +56,6 @@ public class Usuario implements Serializable {
 	private String senha;
 	private String bio;
 	private String avatarUrl;
-	private Long qtdSeguidores = 0l;
-	private Long qtdSeguindo = 0l;
 	private Long qtdPublicacao = 0l;
 
 	@CreationTimestamp
@@ -67,6 +68,18 @@ public class Usuario implements Serializable {
 	@CollectionTable(name = "perfil", joinColumns = @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_usuario")))
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<Perfil> perfis = new HashSet<>();
+
+	@OneToMany(mappedBy = "autor", orphanRemoval = true)
+	private List<Publicacao> publicacoes = new ArrayList<>();
+
+	@OneToMany(mappedBy = "usuario", orphanRemoval = true)
+	private List<CurtidaPublicacao> curtidasNasPublicacoes = new ArrayList<>();
+
+	@OneToMany(mappedBy = "seguindo", orphanRemoval = true)
+	private List<Relacionamento> seguidores = new ArrayList<>();
+
+	@OneToMany(mappedBy = "seguidor", orphanRemoval = true)
+	private List<Relacionamento> seguindos = new ArrayList<>();
 
 	public Usuario() {
 	}
@@ -127,22 +140,6 @@ public class Usuario implements Serializable {
 		this.avatarUrl = avatarUrl;
 	}
 
-	public Long getQtdSeguidores() {
-		return qtdSeguidores;
-	}
-
-	public void setQtdSeguidores(Long qtdSeguidores) {
-		this.qtdSeguidores = qtdSeguidores;
-	}
-
-	public Long getQtdSeguindo() {
-		return qtdSeguindo;
-	}
-
-	public void setQtdSeguindo(Long qtdSeguindo) {
-		this.qtdSeguindo = qtdSeguindo;
-	}
-
 	public Long getQtdPublicacao() {
 		return qtdPublicacao;
 	}
@@ -173,6 +170,38 @@ public class Usuario implements Serializable {
 
 	public void setPerfis(Set<Perfil> perfis) {
 		this.perfis = perfis;
+	}
+
+	public List<Publicacao> getPublicacoes() {
+		return publicacoes;
+	}
+
+	public void setPublicacoes(List<Publicacao> publicacoes) {
+		this.publicacoes = publicacoes;
+	}
+
+	public List<CurtidaPublicacao> getCurtidasNasPublicacoes() {
+		return curtidasNasPublicacoes;
+	}
+
+	public void setCurtidasNasPublicacoes(List<CurtidaPublicacao> curtidasNasPublicacoes) {
+		this.curtidasNasPublicacoes = curtidasNasPublicacoes;
+	}
+
+	public List<Relacionamento> getSeguidores() {
+		return seguidores;
+	}
+
+	public void setSeguidores(List<Relacionamento> seguidores) {
+		this.seguidores = seguidores;
+	}
+
+	public List<Relacionamento> getSeguindos() {
+		return seguindos;
+	}
+
+	public void setSeguindos(List<Relacionamento> seguindos) {
+		this.seguindos = seguindos;
 	}
 
 	@Override

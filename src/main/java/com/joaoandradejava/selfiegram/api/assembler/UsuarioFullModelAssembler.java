@@ -14,6 +14,10 @@ public class UsuarioFullModelAssembler {
 	private ModelMapper modelMapper;
 
 	public UsuarioFullModel toModel(Usuario usuario) {
-		return this.modelMapper.map(usuario, UsuarioFullModel.class);
+		UsuarioFullModel usuarioFullModel = this.modelMapper.map(usuario, UsuarioFullModel.class);
+		usuarioFullModel.setQtdSeguidores((long) usuario.getSeguidores().size());
+		usuarioFullModel.setQtdSeguindo((long) usuario.getSeguindos().size());
+
+		return usuarioFullModel;
 	}
 }

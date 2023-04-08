@@ -25,4 +25,16 @@ public class CrudUsuarioService {
 		return this.repository.save(usuario);
 	}
 
+	@Transactional
+	public Usuario atualizarPerfil(Usuario usuario) {
+		return this.repository.save(usuario);
+	}
+
+	@Transactional
+	public void deletarPorId(Long id) {
+		this.buscarPorId(id);
+
+		this.repository.deleteById(id);
+	}
+
 }

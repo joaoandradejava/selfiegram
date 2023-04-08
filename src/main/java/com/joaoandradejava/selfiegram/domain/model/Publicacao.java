@@ -31,6 +31,7 @@ public class Publicacao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_publicacao")
 	private Long id;
 	private String avatarUrl;
+	private String descricao;
 
 	@CreationTimestamp
 	@Column(nullable = false)
@@ -38,8 +39,6 @@ public class Publicacao implements Serializable {
 
 	@UpdateTimestamp
 	private LocalDateTime dataAtualizacao;
-	private Long qtdCurtidas = 0l;
-	private Long qtdComentarios = 0l;
 
 	@ManyToOne
 	@JoinColumn(nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_autor"))
@@ -70,6 +69,14 @@ public class Publicacao implements Serializable {
 		this.avatarUrl = avatarUrl;
 	}
 
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
 	public LocalDateTime getDataPublicacao() {
 		return dataPublicacao;
 	}
@@ -84,22 +91,6 @@ public class Publicacao implements Serializable {
 
 	public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
 		this.dataAtualizacao = dataAtualizacao;
-	}
-
-	public Long getQtdCurtidas() {
-		return qtdCurtidas;
-	}
-
-	public void setQtdCurtidas(Long qtdCurtidas) {
-		this.qtdCurtidas = qtdCurtidas;
-	}
-
-	public Long getQtdComentarios() {
-		return qtdComentarios;
-	}
-
-	public void setQtdComentarios(Long qtdComentarios) {
-		this.qtdComentarios = qtdComentarios;
 	}
 
 	public Usuario getAutor() {
