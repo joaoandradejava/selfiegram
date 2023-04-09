@@ -13,11 +13,11 @@ import com.joaoandradejava.selfiegram.domain.model.ComentarioPublicacao;
 @Repository
 public interface ComentarioPublicacaoRepository extends JpaRepository<ComentarioPublicacao, Long> {
 
-	@Query("select c from ComentarioPublicacao c where c.usuario.id = :usuarioId and c.publicacao.id = :publicacaoId and c.id = :comentarioPublicacaoId")
-	public Optional<ComentarioPublicacao> buscarComentarioDaPublicacaoDoUsuario(Long usuarioId, Long publicacaoId,
+	@Query("select c from ComentarioPublicacao c where c.usuario.id = :usuarioId and c.id = :comentarioPublicacaoId")
+	public Optional<ComentarioPublicacao> buscarComentarioDaPublicacaoDoUsuario(Long usuarioId,
 			Long comentarioPublicacaoId);
 
-	@Query("select c from ComentarioPublicacao c where c.usuario.id = :usuarioId and c.publicacao.id = :publicacaoId")
-	public Page<ComentarioPublicacao> buscarComentariosDaPublicacao(Pageable pageable, Long usuarioId,
-			Long publicacaoId);
+	@Query("select c from ComentarioPublicacao c where c.publicacao.id = :publicacaoId")
+	public Page<ComentarioPublicacao> buscarComentariosDaPublicacao(Pageable pageable, Long publicacaoId);
+
 }

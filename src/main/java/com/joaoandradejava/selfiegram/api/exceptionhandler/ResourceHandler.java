@@ -14,6 +14,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.joaoandradejava.selfiegram.domain.exception.ErroInternoServidorException;
+import com.joaoandradejava.selfiegram.domain.exception.FalhaNaAutenticacaoException;
 import com.joaoandradejava.selfiegram.domain.exception.NegocioException;
 import com.joaoandradejava.selfiegram.domain.exception.ObjetoNaoEncontradoException;
 
@@ -38,6 +40,16 @@ public class ResourceHandler extends ResponseEntityExceptionHandler {
 		Error error = Error.NEGOCIO_EXCEPTION;
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 
+		ProblemDetail problemDetail = ProblemDetail.montarProblemDetail(error.getType(), error.getTitle(),
+				status.value(), ex.getMessage());
+
+		return this.handleExceptionInternal(ex, problemDetail, new HttpHeaders(), status, request);
+	}
+
+	@ExceptionHandler(FalhaNaAutenticacaoException.class)
+	public ResponseEntity<Object> handleFalhaNaAutenticacao(FalhaNaAutenticacaoException ex, WebRequest request) {
+		Error error = Error.FALHA_NA_AUTENTICACAO;
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		ProblemDetail problemDetail = ProblemDetail.montarProblemDetail(error.getType(), error.getTitle(),
 				status.value(), ex.getMessage());
 
@@ -94,6 +106,17 @@ public class ResourceHandler extends ResponseEntityExceptionHandler {
 				status.value(), mensagem);
 
 		return this.handleExceptionInternal(ex, problemDetail, new HttpHeaders(), status, request);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers,
+			HttpStatusCode status, WebRequest request) {
+		Error error = Error.ERRO_NAS_VARIAVEIS_DE_PARAMETRO_DA_URI;
+		String mensagem = String.format("Está faltando a variavel de parametro '%s' do tipo %s", ex.getVariableName(),
+				ex.getParameter().getGenericParameterType().getTypeName());
+		ProblemDetail problemDetail = ProblemDetail.montarProblemDetail(error.getTitle(), error.getType(),
+				status.value(), mensagem, MENSAGEM_ERRO_PADRAO);
+		return this.handleExceptionInternal(ex, problemDetail, headers, status, request);
 	}
 
 	@Override

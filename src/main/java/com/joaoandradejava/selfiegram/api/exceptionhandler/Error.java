@@ -11,7 +11,10 @@ public enum Error {
 	PROPRIEDADE_INEXISTENTE("propriedade-inexistente", "Propriedade inexistente"),
 	ERRO_INTEGRIDADE_BANCO_DADOS("erro-integridade-banco-dados", "Erro de integridade banco de dados"),
 	ERRO_CONSTRAINT_BANCO_DADOS("erro-constraint-banco-dados", "Erro de consntraint banco de dados"),
-	ERRO_INTERNO_SERVIDOR("erro-interno-servidor", "Erro interno no servidor");
+	ERRO_INTERNO_SERVIDOR("erro-interno-servidor", "Erro interno no servidor"),
+	ERRO_NAS_VARIAVEIS_DE_PARAMETRO_DA_URI("erro-nas-variaveis-de-parametro-da-uri",
+			"Erro nas variaveis de parâmetro da URI"),
+	FALHA_NA_AUTENTICACAO("falha-na-autenticacao", "Falha na autenticação");
 
 	private String type;
 	private String title;

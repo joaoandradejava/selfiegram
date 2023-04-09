@@ -51,7 +51,7 @@ public class ComentarioPublicacao implements Serializable {
 	private Publicacao publicacao;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_resposta"))
+	@JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_resposta"))
 	private ComentarioPublicacao resposta;
 
 	@OneToMany(mappedBy = "comentario", orphanRemoval = true)

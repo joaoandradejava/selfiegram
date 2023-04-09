@@ -1,8 +1,6 @@
 package com.joaoandradejava.selfiegram.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +12,7 @@ import com.joaoandradejava.selfiegram.domain.model.Usuario;
 import com.joaoandradejava.selfiegram.domain.repository.ComentarioPublicacaoRepository;
 
 @Service
-public class UsuarioPublicacaoComentarioPublicacaoService {
+public class ComentarioPublicacaoService {
 
 	@Autowired
 	private ComentarioPublicacaoRepository comentarioPublicacaoRepository;
@@ -22,33 +20,32 @@ public class UsuarioPublicacaoComentarioPublicacaoService {
 	@Autowired
 	private UsuarioPublicacaoService usuarioPublicacaoService;
 
-	public Page<ComentarioPublicacao> buscarComentariosDaPublicacao(Pageable pageable, Long usuarioId,
-			Long publicacaoId) {
-		return this.comentarioPublicacaoRepository.buscarComentariosDaPublicacao(pageable, usuarioId, publicacaoId);
-	}
+	@Autowired
+	private CrudUsuarioService crudUsuarioService;
 
-	private ComentarioPublicacao buscarComentarioDaPublicacaoPorId(Long comentarioPublicacaoId) {
+	public ComentarioPublicacao buscarComentarioPublicacaoPorId(Long comentarioPublicacaoId) {
 		return this.comentarioPublicacaoRepository.findById(comentarioPublicacaoId)
 				.orElseThrow(() -> new ObjetoNaoEncontradoException(String.format(
-						"O Comentario da publicação de id %d não foi encontrado no sistema!", comentarioPublicacaoId)));
+						"Não foi encontrado o comentario da publicação de id %d no sistema!", comentarioPublicacaoId)));
 	}
 
 	public ComentarioPublicacao buscarComentarioDaPublicacaoDoUsuario(Long usuarioId, Long publicacaoId,
 			Long comentarioPublicacaoId) {
-		this.usuarioPublicacaoService.buscarPublicacaoDoUsuario(usuarioId, publicacaoId);
-		this.buscarComentarioDaPublicacaoPorId(comentarioPublicacaoId);
+		this.crudUsuarioService.buscarPorId(usuarioId);
+		this.usuarioPublicacaoService.buscarPublicacaoPorId(publicacaoId);
+		this.buscarComentarioPublicacaoPorId(comentarioPublicacaoId);
 
 		return this.comentarioPublicacaoRepository
-				.buscarComentarioDaPublicacaoDoUsuario(usuarioId, publicacaoId, comentarioPublicacaoId)
-				.orElseThrow(() -> new NegocioException(String.format(
-						"O Comentario da publicação de id %d não pertence ao usuario de %d e publicação de id %d",
-						comentarioPublicacaoId, usuarioId, publicacaoId)));
+				.buscarComentarioDaPublicacaoDoUsuario(usuarioId, comentarioPublicacaoId)
+				.orElseThrow(() -> new NegocioException(
+						String.format("O Comentario da publicação de id %d não pertence ao usuario de id %d",
+								comentarioPublicacaoId, usuarioId)));
 	}
 
 	@Transactional
 	public ComentarioPublicacao fazerComentario(String comentario, Long usuarioId, Long publicacaoId) {
-		Publicacao publicacao = this.usuarioPublicacaoService.buscarPublicacaoDoUsuario(usuarioId, publicacaoId);
-		Usuario usuario = publicacao.getAutor();
+		Usuario usuario = this.crudUsuarioService.buscarPorId(usuarioId);
+		Publicacao publicacao = this.usuarioPublicacaoService.buscarPublicacaoPorId(publicacaoId);
 
 		ComentarioPublicacao comentarioPublicacao = new ComentarioPublicacao();
 		comentarioPublicacao.setComentario(comentario);

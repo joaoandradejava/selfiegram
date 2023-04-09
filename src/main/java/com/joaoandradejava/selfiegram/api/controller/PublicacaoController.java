@@ -8,23 +8,38 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.joaoandradejava.selfiegram.api.model.ComentarioPublicacaoModel;
 import com.joaoandradejava.selfiegram.api.model.CurtidaPublicacaoModel;
+import com.joaoandradejava.selfiegram.domain.model.ComentarioPublicacao;
 import com.joaoandradejava.selfiegram.domain.model.CurtidaPublicacao;
+import com.joaoandradejava.selfiegram.domain.service.PublicacaoComentarioService;
 import com.joaoandradejava.selfiegram.domain.service.PublicacaoCurtidaService;
 
 @RestController
-@RequestMapping("/publicacoes/{publicacaoId}/curtidas")
-public class PublicacaoCurtidaController {
+@RequestMapping("/publicacoes")
+public class PublicacaoController {
 
 	@Autowired
 	private PublicacaoCurtidaService publicacaoCurtidaService;
 
-	@GetMapping
+	@Autowired
+	private PublicacaoComentarioService publicacaoComentarioService;
+
+	@GetMapping("/{publicacaoId}/curtidas")
 	public Page<CurtidaPublicacaoModel> buscarCurtidasDaPublicacao(Pageable pageable, @PathVariable Long publicacaoId) {
 		Page<CurtidaPublicacao> page = this.publicacaoCurtidaService.buscarCurtidasDaPublicacao(publicacaoId, pageable);
 
 		return page.map(x -> new CurtidaPublicacaoModel(x));
 
+	}
+
+	@GetMapping("/{publicacaoId}/comentarios")
+	public Page<ComentarioPublicacaoModel> buscarComentariosDaPublicacao(Pageable pageable,
+			@PathVariable Long publicacaoId) {
+		Page<ComentarioPublicacao> page = this.publicacaoComentarioService
+				.buscarComentariosDaPublicacao(pageable, publicacaoId);
+
+		return page.map(x -> new ComentarioPublicacaoModel(x));
 	}
 
 }

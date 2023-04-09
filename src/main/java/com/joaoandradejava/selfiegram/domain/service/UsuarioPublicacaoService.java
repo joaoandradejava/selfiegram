@@ -24,14 +24,14 @@ public class UsuarioPublicacaoService {
 	@Autowired
 	private CurtidaPublicacaoRepository curtidaPublicacaoRepository;
 
-	private Publicacao buscarPorId(Long id) {
+	public Publicacao buscarPublicacaoPorId(Long id) {
 		return this.publicacaoRepository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException(
 				String.format("A publicação de id %d não foi encontrada no sistema!", id)));
 	}
 
 	public Publicacao buscarPublicacaoDoUsuario(Long usuarioId, Long publicacaoId) {
 		this.crudUsuarioService.buscarPorId(usuarioId);
-		this.buscarPorId(publicacaoId);
+		this.buscarPublicacaoPorId(publicacaoId);
 
 		return this.publicacaoRepository.buscarPublicacaoDoUsuario(usuarioId, publicacaoId)
 				.orElseThrow(() -> new NegocioException(String
@@ -61,7 +61,7 @@ public class UsuarioPublicacaoService {
 	@Transactional
 	public void curtirPublicacao(Long usuarioId, Long publicacaoId) {
 		Usuario usuario = this.crudUsuarioService.buscarPorId(usuarioId);
-		Publicacao publicacao = this.buscarPorId(publicacaoId);
+		Publicacao publicacao = this.buscarPublicacaoPorId(publicacaoId);
 
 		Boolean isJaCurtiu = this.curtidaPublicacaoRepository.verificarSeJaCurtiu(usuarioId, publicacaoId);
 
@@ -79,7 +79,7 @@ public class UsuarioPublicacaoService {
 	@Transactional
 	public void descurtirPublicacao(Long usuarioId, Long publicacaoId) {
 		this.crudUsuarioService.buscarPorId(usuarioId);
-		this.buscarPorId(publicacaoId);
+		this.buscarPublicacaoPorId(publicacaoId);
 
 		Boolean isJaCurtiu = this.curtidaPublicacaoRepository.verificarSeJaCurtiu(usuarioId, publicacaoId);
 

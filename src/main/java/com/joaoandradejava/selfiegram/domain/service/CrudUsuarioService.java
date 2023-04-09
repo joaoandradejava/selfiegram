@@ -1,6 +1,7 @@
 package com.joaoandradejava.selfiegram.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.joaoandradejava.selfiegram.domain.exception.ObjetoNaoEncontradoException;
@@ -15,6 +16,9 @@ public class CrudUsuarioService {
 	@Autowired
 	private UsuarioRepository repository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	public Usuario buscarPorId(Long id) {
 		return this.repository.findById(id).orElseThrow(() -> new ObjetoNaoEncontradoException(
 				String.format("Usuario de id %d não foi encontrado no sistema!", id)));
@@ -22,6 +26,8 @@ public class CrudUsuarioService {
 
 	@Transactional
 	public Usuario realizarCadastro(Usuario usuario) {
+		usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));
+
 		return this.repository.save(usuario);
 	}
 
