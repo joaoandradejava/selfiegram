@@ -28,7 +28,6 @@ public class CurtidaComentario implements Serializable {
 
 	@CreationTimestamp
 	private LocalDateTime dataCurtida;
-	private String nomeUsuario;
 
 	@ManyToOne
 	@JoinColumn(nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fk_comentario"))
@@ -55,14 +54,6 @@ public class CurtidaComentario implements Serializable {
 
 	public void setDataCurtida(LocalDateTime dataCurtida) {
 		this.dataCurtida = dataCurtida;
-	}
-
-	public String getNomeUsuario() {
-		return nomeUsuario;
-	}
-
-	public void setNomeUsuario(String nomeUsuario) {
-		this.nomeUsuario = nomeUsuario;
 	}
 
 	public ComentarioPublicacao getComentario() {

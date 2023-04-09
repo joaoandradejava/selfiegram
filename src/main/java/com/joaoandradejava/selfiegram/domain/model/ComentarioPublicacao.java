@@ -32,9 +32,6 @@ public class ComentarioPublicacao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_comentario_publicacao")
 	private Long id;
 
-	@Column(nullable = false)
-	private String nomeUsuario;
-
 	@CreationTimestamp
 	@Column(nullable = false)
 	private LocalDateTime dataComentario;
@@ -69,14 +66,6 @@ public class ComentarioPublicacao implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getNomeUsuario() {
-		return nomeUsuario;
-	}
-
-	public void setNomeUsuario(String nomeUsuario) {
-		this.nomeUsuario = nomeUsuario;
 	}
 
 	public LocalDateTime getDataComentario() {

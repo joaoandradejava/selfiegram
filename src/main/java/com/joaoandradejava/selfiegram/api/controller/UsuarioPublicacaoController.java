@@ -55,13 +55,13 @@ public class UsuarioPublicacaoController {
 		this.usuarioPublicacaoService.deletarPublicacaoDoUsuario(usuarioId, publicacaoId);
 	}
 
-	@PutMapping("/{publicacaoId}/curti")
+	@PutMapping("/{publicacaoId}/curtidas")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void curtirPublicacao(@PathVariable Long usuarioId, @PathVariable Long publicacaoId) {
 		this.usuarioPublicacaoService.curtirPublicacao(usuarioId, publicacaoId);
 	}
 
-	@DeleteMapping("/{publicacaoId}/curti")
+	@DeleteMapping("/{publicacaoId}/curtidas")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void descurtirPublicacao(@PathVariable Long usuarioId, @PathVariable Long publicacaoId) {
 		this.usuarioPublicacaoService.descurtirPublicacao(usuarioId, publicacaoId);

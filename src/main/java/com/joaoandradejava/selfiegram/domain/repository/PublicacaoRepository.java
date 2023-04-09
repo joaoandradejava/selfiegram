@@ -13,4 +13,5 @@ public interface PublicacaoRepository extends JpaRepository<Publicacao, Long> {
 
 	@Query("select p from Publicacao p where p.id = :publicacaoId and p.autor.id = :usuarioId")
 	public Optional<Publicacao> buscarPublicacaoDoUsuario(Long usuarioId, Long publicacaoId);
+
 }

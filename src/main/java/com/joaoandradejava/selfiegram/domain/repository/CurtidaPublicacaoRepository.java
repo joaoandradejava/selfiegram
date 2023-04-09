@@ -1,5 +1,7 @@
 package com.joaoandradejava.selfiegram.domain.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +18,8 @@ public interface CurtidaPublicacaoRepository extends JpaRepository<CurtidaPublic
 	@Modifying
 	@Query("delete from CurtidaPublicacao c where c.publicacao.id = :publicacaoId and c.usuario.id = :usuarioId")
 	public void deletarCurtidaDoUsuarioNaPublicacao(Long usuarioId, Long publicacaoId);
+
+	@Query("select c from CurtidaPublicacao c where c.publicacao.id = :publicacaoId")
+	public Page<CurtidaPublicacao> buscarCurtidasDaPublicacao(Pageable pageable, Long publicacaoId);
+
 }

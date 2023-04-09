@@ -72,7 +72,6 @@ public class UsuarioPublicacaoService {
 		CurtidaPublicacao curtidaPublicacao = new CurtidaPublicacao();
 		curtidaPublicacao.setPublicacao(publicacao);
 		curtidaPublicacao.setUsuario(usuario);
-		curtidaPublicacao.setNomeUsuario(usuario.getNomeUsuario());
 
 		this.curtidaPublicacaoRepository.save(curtidaPublicacao);
 	}

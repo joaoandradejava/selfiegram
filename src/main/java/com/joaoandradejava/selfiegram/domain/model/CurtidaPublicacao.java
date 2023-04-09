@@ -27,9 +27,6 @@ public class CurtidaPublicacao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_curtida_publicacao")
 	private Long id;
 
-	@Column(nullable = false)
-	private String nomeUsuario;
-
 	@CreationTimestamp
 	@Column(nullable = false)
 	private LocalDateTime dataCurtida;
@@ -51,14 +48,6 @@ public class CurtidaPublicacao implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getNomeUsuario() {
-		return nomeUsuario;
-	}
-
-	public void setNomeUsuario(String nomeUsuario) {
-		this.nomeUsuario = nomeUsuario;
 	}
 
 	public LocalDateTime getDataCurtida() {
